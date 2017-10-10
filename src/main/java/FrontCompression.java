@@ -32,6 +32,7 @@ public class FrontCompression {
      * @return the input compressed using front encoding
      */
     public static String compress(final String corpus) {
+        String output = "";
         /*
          * Defend against bad inputs.
          */
@@ -41,11 +42,23 @@ public class FrontCompression {
             return "";
         }
 
+        String[] words = corpus.split(" ");
+
+        for (int i = 0; i < words.length - 1; i++) {
+            String word1 = words[i];
+            String word2 = words[i + 1];
+            int commonPrefixLength = longestPrefix(word1, word2);
+
+            String compressedWord = commonPrefixLength + " ";
+            compressedWord += word2.substring(commonPrefixLength, word2.length());
+            output += compressedWord;
+        }
+
         /*
          * Complete this function.
          */
 
-        return "";
+        return output;
     }
 
     /**
@@ -79,10 +92,16 @@ public class FrontCompression {
      * @return the length of the common prefix between the two strings
      */
     private static int longestPrefix(final String firstString, final String secondString) {
-        /*
-         * Complete this function.
-         */
-        return 0;
+        int prefixLength = 0;
+
+        for (int i = 0; i < Math.min(firstString.length(), secondString.length()); i++) {
+            String s = firstString.substring(0, i + 1);
+            int t = secondString.indexOf(s);
+            if (t != -1) {
+                prefixLength++;
+            }
+        }
+        return prefixLength;
     }
 
     /**
